@@ -1,0 +1,18 @@
+package:
+  - FROM common-nginxvue
+  - ADD dist /var/www/public
+
+dev:
+  build:
+    - yarn install
+    - npm run build:dev
+
+staging:
+  build:
+    - yarn install
+    - npm run build:uat
+
+prod:
+  build:
+    - yarn install
+    - npm run build:prod

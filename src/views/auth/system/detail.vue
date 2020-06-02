@@ -22,41 +22,40 @@
 </template>
 
 <script>
-  import api from '@/services/systemLogic'
+import api from '@/services/systemLogic'
 
-  export default {
-    data() {
-      return {
-        detail: {
-          CODE: null,
-          NAME: null,
-          BEGIN_TIME: null,
-          END_TIME: null,
-          CREATED_TIME: null,
-          STATUS: null
-        },
-        flag:false,
-      }
-    },
-    created() {
-      this.initData();
-    },
-    methods: {
-      initData() {
-        api.systemFind({code: this.$route.query.code}).then(result=>{
-          if (result.code == 1) {
-            this.detail = result.data;
-            this.flag = !this.flag;
-          }
-          else {
-            this.$message({type: 'error', message: `加载失败!${result.msg}`});
-          }
-        });
-      }
-    },
-    watch: {
-      // 如果路由有变化，会再次执行该方法
-      '$route': 'initData'
-    },
+export default {
+  data() {
+    return {
+      detail: {
+        CODE: null,
+        NAME: null,
+        BEGIN_TIME: null,
+        END_TIME: null,
+        CREATED_TIME: null,
+        STATUS: null
+      },
+      flag: false
+    }
+  },
+  created() {
+    this.initData();
+  },
+  methods: {
+    initData() {
+      api.systemFind({code: this.$route.query.code}).then(result => {
+        if (result.code === 1) {
+          this.detail = result.data;
+          this.flag = !this.flag;
+        } else {
+          this.$message({type: 'error', message: `加载失败!${result.msg}`});
+        }
+      });
+    }
+  },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    '$route': 'initData'
   }
+}
 </script>

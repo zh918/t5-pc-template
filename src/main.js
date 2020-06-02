@@ -16,7 +16,7 @@ import "./common/http";
 import { authRouter } from "./common/auth";
 import "./common/tabHelper";
 
-Vue.use(Element);
+Vue.use(Element)   
 
 
 const globalVue = new Vue({

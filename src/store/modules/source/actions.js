@@ -1,12 +1,12 @@
 
 // import sourceApi from '../../../server/sourceLogic'
-import * as types from './types'
+import * as types from './types';
 
 export default {
   /**
    * 产品
    */
-loadProduct(context) {
+  loadProduct(context) {
     // return sourceApi.productDict().then(result => { 
     //   if (result.errorCode == 0) {
     //     let dict = [];
@@ -22,9 +22,9 @@ loadProduct(context) {
     //   }
 
     //   return result;
-	// 	});
-},
-loadProductType(context) {
+    // 	});
+  },
+  loadProductType(context) {
     // return sourceApi.productTypeDict().then(result => {
 
     //   if (result.errorCode == 0) {
@@ -40,10 +40,10 @@ loadProductType(context) {
     //   }
 
     //   return result;
-	// 	});
-},
+    // 	});
+  }
 
   
 
 
-}
+};

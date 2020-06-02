@@ -67,157 +67,169 @@
 </template>
 
 <script>
-  import api from '@/services/systemLogic'
+import api from '@/services/systemLogic'
 
-  export default {
-    data() {
-      return {
-        // -----------------------标准1 开始-----------------------
-        searchContainer: {
-          isResetAutoSearch: false,
-          itemSpan: 4,
+export default {
+  data() {
+    return {
+      // -----------------------标准1 开始-----------------------
+      searchContainer: {
+        isResetAutoSearch: false,
+        itemSpan: 4,
+        list: [
+          { key: 'NAME', type: 'input', class: '', placeholder: '资源名称', value: '', fetch: '', cb: ''},
+          { key: 'STATUS', type: 'select', class: '', placeholder: '系统名称', value: '', fetch: '', cb: '', options: [
+            { value: '1', label: '启用' },
+            { value: '0', label: '禁用' }
+          ]}
+        ]
+      },
+      operatorContainer: [{ type: 'primary', text: '添加资源', cb: this.handleAddSystem}],
+      tableContainer: {
+        selection: true,
+        selectionChange: () => {},
+        /** 
+         * // {
+          //   type: 'primary',
+          //   label: '删除',
+          //   cb: this.handleDel
+          // }
+         */
+        operate: {
+          label: "操作",
+          // fixed: "right",
+          width: "100px",
           list: [
-            { key: 'NAME', type: 'input', class: '', placeholder: '资源名称', value: '', fetch: '', cb: ''},
-            { key: 'STATUS', type: 'select', class: '', placeholder: '系统名称', value: '', fetch: '', cb: '', options: [
-              { value: '1', label: '启用' },
-              { value: '0', label: '禁用' }
-            ]},
+            /** 
+             * // {
+                //   type: 'primary',
+                //   label: '删除',
+                //   cb: this.handleDel
+                // }
+             */
           ]
         },
-        operatorContainer: [
-          { type: 'primary', text: '添加资源', cb: this.handleAddSystem}
+        head: [
+          {
+            prop: "CODE",
+            label: "系统名称"
+          },
+          {
+            prop: "NAME",
+            label: "资源类型"
+          },
+          {
+            prop: "CREATED_TIME",
+            label: "资源名称"
+          },
+          {
+            prop: "CREATED_TIME",
+            label: "资源编码"
+          },
+          {
+            prop: "CREATED_TIME",
+            label: "资源地址"
+          }
         ],
-        tableContainer: {
-          selection:true,
-          selectionChange: ()=>{},
-          operate: [
-            // {
-            //   type: 'primary',
-            //   label: '删除',
-            //   cb: this.handleDel
-            // }
-          ],
-          head: [
-            {
-              prop: "CODE",
-              label: "系统名称"
-            },
-            {
-              prop: "NAME",
-              label: "资源类型"
-            },
-            {
-              prop: "CREATED_TIME",
-              label: "资源名称"
-            },
-            {
-              prop: "CREATED_TIME",
-              label: "资源编码"
-            },
-            {
-              prop: "CREATED_TIME",
-              label: "资源地址"
-            }
-          ],
-          data: []
-        },
-        paginationContainer: {
-          pageNum: 1,
-          total: 1
-        },
-        tempParms:null,
-        // -----------------------标准1 结束-----------------------
+        data: []
+      },
+      paginationContainer: {
+        pageNum: 1,
+        total: 1
+      },
+      tempParms: null,
+      // -----------------------标准1 结束-----------------------
 
-        dialogVisibleSystem: false,
-        dialogFrm: {
-          NAME:'',
-          BEGIN_TIME:'',
-          END_TIME:'',
-          STATUS:''
-        },
+      dialogVisibleSystem: false,
+      dialogFrm: {
+        NAME: '',
+        BEGIN_TIME: '',
+        END_TIME: '',
+        STATUS: ''
+      },
 
-        flag: {
-          isAddSystemSubmit: true
-        }
-
-
+      flag: {
+        isAddSystemSubmit: true
       }
-    },
-    created() {
-      $TabHelper.initFilter(this.$route.meta.uid, (obj)=>{
-        this._data.searchContainer = obj.searchContainer;
-        this._data.paginationContainer = obj.paginationContainer;
+
+
+    }
+  },
+  created() {
+    $TabHelper.initFilter(this.$route.meta.uid, (obj) => {
+      this._data.searchContainer = obj.searchContainer;
+      this._data.paginationContainer = obj.paginationContainer;
+    });
+  },
+  methods: {
+    initData(parms) {
+      api.systemQuery(parms).then(result => {
+        if (result.code === 1) {
+          this.tableContainer.data = result.data.list;
+          this.paginationContainer.pageNum = result.data.page.pageNum;
+          this.paginationContainer.total = result.data.page.total;
+        } else {
+          this.$message.error(result.msg);
+        }
       });
     },
-    methods: {
-      initData(parms) {
-        api.systemQuery(parms).then(result=>{
-          if (result.code == 1) {
-            this.tableContainer.data = result.data.list;
-            this.paginationContainer.pageNum = result.data.page.pageNum;
-            this.paginationContainer.total = result.data.page.total;
-          }
-          else {
-            this.$message.error(result.msg);
-          }
-        });
-      },
-      handleSearch(parms) {
-        this.tempParms = parms;
-        this.initData(parms);
-      },
-      handleAddSystem() { 
-        this._clearDialogData();
-        this.dialogVisibleSystem = true;
-      },
-      handleDel(row) {
-        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
-        });
-      },
-      handleAddSystemSubmit() {
-        if (!this.flag.isAddSystemSubmit) return;
-        this.flag.isAddSystemSubmit = false;
-        api.systemCreate(this.dialogFrm).then(result=>{
-          this.flag.isAddSystemSubmit = true;
-          if (result.code == 1) {
-            this.handleSearch(this.tempParms);
-            this.dialogVisibleSystem = false;
-            this.$message({type: 'success', message: '操作成功!'});
-          }
-          else {
-            this.$message({type: 'error', message: `操作失败!${result.msg}`});
-          }
-        });
-      },
-      _clearDialogData() {
-        this.dialogFrm = {
-          NAME:'',
-          BEGIN_TIME:'',
-          END_TIME:'',
-          STATUS:''
-        };
-      },
-      handleDetails(code) {
-        $TabHelper.open({ path: '/system/detail', query:{code}});
-      }
+    handleSearch(parms) {
+      this.tempParms = parms;
+      this.initData(parms);
     },
-    beforeRouteLeave (to, from, next) {
-        $TabHelper.setFilter(from.meta.uid, this._data);  
-        next();
+    handleAddSystem() { 
+      this._clearDialogData();
+      this.dialogVisibleSystem = true;
+    },
+    handleDel(row) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
+    },
+    handleAddSystemSubmit() {
+      if (!this.flag.isAddSystemSubmit) {
+        return; 
+      }
+      this.flag.isAddSystemSubmit = false;
+      api.systemCreate(this.dialogFrm).then(result => {
+        this.flag.isAddSystemSubmit = true;
+        if (result.code === 1) {
+          this.handleSearch(this.tempParms);
+          this.dialogVisibleSystem = false;
+          this.$message({type: 'success', message: '操作成功!'});
+        } else {
+          this.$message({type: 'error', message: `操作失败!${result.msg}`});
+        }
+      });
+    },
+    _clearDialogData() {
+      this.dialogFrm = {
+        NAME: '',
+        BEGIN_TIME: '',
+        END_TIME: '',
+        STATUS: ''
+      };
+    },
+    handleDetails(code) {
+      $TabHelper.open({ path: '/system/detail', query: {code}});
     }
-    
+  },
+  beforeRouteLeave (to, from, next) {
+    $TabHelper.setFilter(from.meta.uid, this._data);  
+    next();
   }
+    
+}
 </script>

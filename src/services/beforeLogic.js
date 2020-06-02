@@ -1,4 +1,4 @@
-import urls from "./url";
+import urls from './url';
 
 class BeforeLogic {
   constructor() {}

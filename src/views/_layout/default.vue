@@ -30,86 +30,85 @@
                 <router-view></router-view>
             </div>
         </div> 
-    </div>
- 		 
+    </div>	 
   </div>
 </template>
 
 <script>
-  import { mapState } from "vuex";    
-  import leftMenu from './block/leftMenu'
+import { mapState } from "vuex";    
+import leftMenu from './block/leftMenu'
 
-	export default {
-		data() {
-			return { 
-        isCollapse:false, // true:菜单折叠 false:菜单打开
-        display: 'tab', // 页面打开方式 tab、breadcrumb
-        // keepAlive:this.$store.state.tabs.list.find(t=>t.path == this.$route.path).meta.keepAlive || false
-			}
-    },
-    computed:{
-      ...mapState(["tabs"]),
-      breadcrumbDataList() {
-        return this._filterRouterForBreadcrumb();
-      }
-    },
-    components: {
-      leftMenu
-    },
-    created() { 
-      this.initData();  
-    },
-    methods: {
-      initData() {
-      },
-      _filterRouterForBreadcrumb() {
-        let _this = this;
-        let breadcrumbData = [];
-        let currentRouter = this.tabs.list.find(t=>t.actived);
-        let routes = this.$router.options.routes;
-        let splitRouter = currentRouter.path.split('/');
-
-        for (let i = 2; i <= splitRouter.length; i++) {
-          let tempPath = splitRouter.slice(0,i).join('/');
-          _pushRouter(tempPath);
-        }
-        
-        function _pushRouter(path) {
-          routes.forEach((r,i)=>{
-            if (r.path == path) {
-              // 直接定位到目录
-              breadcrumbData.push({name: r.name, path: r.path, isJump: false});
-            }
-            else if (r.children.length > 0) {
-              r.children.forEach((c,k)=>{
-                if (c.path == path) 
-                {
-                  breadcrumbData.push({name: c.name, path: c.path, isJump: true});
-                }
-              });
-            }
-          });
-        }
-
-        return breadcrumbData;
-      },
-      handleChooseTab(item) {
-        $TabHelper.open({...item});
-      },
-      handleDelTab(item) {
-        console.log(item)
-          this.$store.dispatch('tabs/delTab',{...item}).then(result=>{
-            $TabHelper.open({...result}).then((_)=>{
-              $TabHelper.delFilter(item.value);
-            });
-          }) 
-      },
-      handleLoginOut() {
-          $Data.remove([]);
-          this.$router.push({path:'/login'});
-      }
+export default {
+  data() {
+    return {
+      // true:菜单折叠 false:菜单打开
+      isCollapse: false, 
+      // 页面打开方式 tab、breadcrumb
+      display: 'tab' 
+      // keepAlive:this.$store.state.tabs.list.find(t=>t.path == this.$route.path).meta.keepAlive || false
     }
-	}
+  },
+  computed: {
+    ...mapState([ "tabs" ]),
+    breadcrumbDataList() {
+      return this._filterRouterForBreadcrumb();
+    }
+  },
+  components: {
+    leftMenu
+  },
+  created() { 
+    this.initData();  
+  },
+  methods: {
+    initData() {
+    },
+    _filterRouterForBreadcrumb() {
+      let _this = this;
+      let breadcrumbData = [];
+      let currentRouter = this.tabs.list.find(t => t.actived);
+      let routes = this.$router.options.routes;
+      let splitRouter = currentRouter.path.split('/');
+
+      for (let i = 2; i <= splitRouter.length; i++) {
+        let tempPath = splitRouter.slice(0, i).join('/');
+        _pushRouter(tempPath);
+      }
+        
+      function _pushRouter(path) {
+        routes.forEach((r, i) => {
+          if (r.path === path) {
+            // 直接定位到目录
+            breadcrumbData.push({name: r.name, path: r.path, isJump: false});
+          } else if (r.children.length > 0) {
+            r.children.forEach((c, k) => {
+              if (c.path === path) {
+                breadcrumbData.push({name: c.name, path: c.path, isJump: true});
+              }
+            });
+          }
+        });
+      }
+
+      return breadcrumbData;
+    },
+    handleChooseTab(item) {
+      $TabHelper.open({...item});
+    },
+    handleDelTab(item) {
+      console.log(item)
+      this.$store.dispatch('tabs/delTab', {...item}).then(result => {
+        $TabHelper.open({...result}).then((_) => {
+          $TabHelper.delFilter(item.value);
+        });
+      }) 
+    },
+    handleLoginOut() {
+      $Data.remove([]);
+      this.$router.push({path: '/login'});
+    }
+  }
+}
 </script>
 
 <style lang="less">

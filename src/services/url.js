@@ -1,4 +1,4 @@
-import path from "@/config/env";
+import path from '@/config/env';
 
 export default {
   // 登陆 登出 菜单
@@ -22,7 +22,7 @@ export default {
   // 系统管理
   systemQuery: `${path.busApi}/api/auth/system/query`,
   systemFind: `${path.busApi}/api/auth/system/find`,
-  systemCreate: `${path.busApi}/api/auth/system/create`,
+  systemCreate: `${path.busApi}/api/auth/system/create`
 
 
   

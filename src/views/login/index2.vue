@@ -1,12 +1,14 @@
 <template>
   <div class="login-container">
     <el-container>
-      <el-header><div class="title">保理系统</div></el-header>
+      <el-header>
+        <div class="title">保理系统</div>
+      </el-header>
       <el-main>
         <div class="login-box">
           <div class="left-box">
             <div class="img-box">
-              <img :src="require('../../assets/login-icon.png')" alt="" />
+              <img :src="require('../../assets/login-icon.png')" alt />
             </div>
             <div class="title">欢迎访问保理系统</div>
           </div>
@@ -23,7 +25,7 @@
                 ></el-input>
                 <div class="line">
                   <div
-                    class="line-focus "
+                    class="line-focus"
                     :class="
                       flag.focus1 || frm.loginName ? 'line-focus-animate' : ''
                     "
@@ -36,15 +38,8 @@
                       ? 'aria-placeholder-animate'
                       : ''
                   "
-                >
-                  用户名
-                </div>
-                <div
-                  class="error-msg"
-                  v-if="!flag.focus1 && !frm.loginName && flag.isValid"
-                >
-                  输入不能为空哦
-                </div>
+                >用户名</div>
+                <div class="error-msg" v-if="!flag.focus1 && !frm.loginName && flag.isValid">输入不能为空哦</div>
               </div>
 
               <div class="login-input">
@@ -70,20 +65,11 @@
                       ? 'aria-placeholder-animate'
                       : ''
                   "
-                >
-                  密码
-                </div>
-                <div
-                  class="error-msg"
-                  v-if="!flag.focus2 && !frm.loginPwd && flag.isValid"
-                >
-                  输入不能为空哦
-                </div>
+                >密码</div>
+                <div class="error-msg" v-if="!flag.focus2 && !frm.loginPwd && flag.isValid">输入不能为空哦</div>
               </div>
 
-              <el-button class="btn-login" type="primary" @click="handleLogin"
-                >登录</el-button
-              >
+              <el-button class="btn-login" type="primary" @click="handleLogin">登录</el-button>
             </div>
           </div>
         </div>
@@ -127,7 +113,7 @@ export default {
         clientId: "bgyfactorOmp"
       };
       api.login(parms).then(result => {
-        if (result.errorCode == 0) {
+        if (result.errorCode === 0) {
           // _this.$router.push({ path: "/home" });
           $TabHelper.open({ path: "/home" });
         } else {

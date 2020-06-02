@@ -98,7 +98,7 @@ export default {
         isValid: true,
         focus1: false,
         focus2: false,
-        isSubmit:true
+        isSubmit: true
       }
     };
   },
@@ -113,7 +113,9 @@ export default {
         return;
       }
 
-      if (!this.flag.isSubmit) return;
+      if (!this.flag.isSubmit) {
+        return;
+      }
 
       this.flag.isSubmit = false;
 
@@ -124,7 +126,7 @@ export default {
       };
       api.login(parms).then(result => {
         _this.flag.isSubmit = true;
-        if (result.code == 1) {
+        if (result.code === 1) {
           $TabHelper.open({ path: "/home" });
         } else {
           _this.$message.error(result.msg);

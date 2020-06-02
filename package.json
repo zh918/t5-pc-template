@@ -4,8 +4,8 @@
   "description": "前端代码",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --ext .js,.html,.vue src",
-    "start": "eslint && node build/debugger.js",
+    "lint": "eslint --ext .js,.vue src --fix --quiet",
+    "start": "npm run lint && node build/debugger.js",
     "prod": "node build/prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,7 +23,7 @@
     "eslint": "^6.8.0",
     "eslint-loader": "^3.0.3",
     "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-vue": "^6.0.1",
+    "eslint-plugin-vue": "^6.2.2",
     "express": "^4.17.1",
     "file-loader": "^5.0.2",
     "happypack": "^5.0.1",

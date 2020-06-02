@@ -1,4 +1,4 @@
-import shortid from 'shortid'
+import shortid from 'shortid';
 
 // 工具函数
 
@@ -7,7 +7,9 @@ class Util {
    * 是否为安全整数
    */
   static IsInt(val, num, event) {
-    if (val == null) return false;
+    if (val === null) {
+      return false; 
+    }
 
     let code = val.charCodeAt(0);
     let flag = Number.isSafeInteger(parseInt(num));
@@ -19,36 +21,42 @@ class Util {
    * 是否为浮点
    */
   static IsFloat(val, num, event) {
-    if (val == null) return false;
-
-    let code = val.charCodeAt(0);
-    if (num != null || num != undefined) {
-      let point = num.split('.').length;
-      if (point > 2) return false;
+    if (val === null) {
+      return false; 
     }
 
-    return (48 <= code && code <= 57) || code == 46;
+    let code = val.charCodeAt(0);
+    if (num !== null || num !== undefined) {
+      let point = num.split('.').length;
+      if (point > 2) {
+        return false; 
+      }
+    }
+
+    return (48 <= code && code <= 57) || code === 46;
   }
 
   /**
    * 是否为数字
    */
   static IsNumber(val, num, event) {
-    if (val == null) return false;
+    if (val === null) {
+      return false; 
+    }
 
     let code = val.charCodeAt(0);
     return (48 <= code && code <= 57);
   }
 
-  static CountDown(starDateTime,endDateTime) {
+  static CountDown(starDateTime, endDateTime) {
 
     let result = {
-        day:0,
-        hour:0,
-        minutes:0,
-        seconds:0,
-        code:1,
-        msg:''
+      day: 0,
+      hour: 0,
+      minutes: 0,
+      seconds: 0,
+      code: 1,
+      msg: ''
     };
 
     try {
@@ -79,11 +87,11 @@ class Util {
       let end_min = Number(end_hms[1]);
       let end_s = Number(end_hms[2]); 
 
-      starDateTime = new Date(star_y,star_m,star_d,star_h,star_min,star_s);
-      endDateTime = new Date(end_y,end_m,end_d,end_h,end_min,end_s); 
+      starDateTime = new Date(star_y, star_m, star_d, star_h, star_min, star_s);
+      endDateTime = new Date(end_y, end_m, end_d, end_h, end_min, end_s); 
 
 
-      if (starDateTime == undefined && endDateTime == undefined) {
+      if (starDateTime === undefined && endDateTime === undefined) {
         result.code = -10;
         result.msg = "参数错误";
         return result;
@@ -98,34 +106,31 @@ class Util {
         result.msg = "未开始";
         result = Object.assign({}, result, _computeTime(rangeDateTime));
         return result;
-      }
-      else if (endDateTime <= currentDateTime) {
+      } else if (endDateTime <= currentDateTime) {
         result.code = 2;
         result.msg = "已结束";
         return result;
-      }
-      else { 
+      } else { 
         rangeDateTime = (endDateTime - currentDateTime);
         result = Object.assign({}, result, _computeTime(rangeDateTime));
         // console.log(result)
         return result;
       }
  
-    }
-    catch {
+    } catch (e) {
       return result;
     }
 
 
     function _computeTime(rangeT) {
       let temp = {
-        day:0,
-        hour:0,
-        minutes:0,
-        seconds:0,  
-        totalSeconds:0,
-        formatMsg:''
-      }
+        day: 0,
+        hour: 0,
+        minutes: 0,
+        seconds: 0,  
+        totalSeconds: 0,
+        formatMsg: ''
+      };
 
       let day = Math.floor(rangeT / 86400000);
       rangeT -= day * 86400000; 
@@ -141,9 +146,15 @@ class Util {
 
       temp.totalSeconds = Number(hour * 60 * 60) + Number(minutes * 60) + Number(seconds);
 
-      if (hour < 10) hour = "0" + hour;
-      if (minutes < 10) minutes = "0" + minutes;
-      if (seconds < 10) seconds = "0" + seconds;
+      if (hour < 10) {
+        hour = "0" + hour; 
+      }
+      if (minutes < 10) {
+        minutes = "0" + minutes; 
+      }
+      if (seconds < 10) {
+        seconds = "0" + seconds; 
+      }
 
       temp.day = day;
       temp.hour = hour;
@@ -168,41 +179,40 @@ class Util {
   static deepCopy(obj, cache = []) {
     // just return if obj is immutable value
     if (obj === null || typeof obj !== 'object') {
-        return obj
+      return obj;
     }
     
     // if obj is hit, it is in circular structure
-    const hit = find(cache, c => c.original === obj)
+    const hit = find(cache, c => c.original === obj);
     if (hit) {
-        return hit.copy
+      return hit.copy;
     }
     
-    const copy = Array.isArray(obj) ? [] : {}
+    const copy = Array.isArray(obj) ? [] : {};
     // put the copy into cache at first
     // because we want to refer it in recursive deepCopy
     cache.push({
-        original: obj,
-        copy
-    })
+      original: obj,
+      copy
+    });
 
     Object.keys(obj).forEach(key => {
-        copy[key] = deepCopy(obj[key], cache)
-    })
+      copy[key] = Util.deepCopy(obj[key], cache);
+    });
 
-    return copy
-   }
+    return copy;
+  }
 
-   static generate(key) {
+  static generate(key) {
     let obj = $Data.get(key);
     if (obj) {
-        return obj;
+      return obj;
+    } else {
+      let uid = shortid.generate();
+      $Data.set(key, uid);
+      return uid;
     }
-    else {
-        let uid = shortid.generate();
-        $Data.set(key, uid);
-        return uid;
-    }
-   }
+  }
 
 }
 

@@ -10,12 +10,16 @@
       text-color="#bfcbd9"
       active-text-color="#ffd04b"
     >
-      <el-submenu :index="item.id" v-for="(item, index) in menu">
+      <el-submenu
+        :key="index"
+        :index="item.id" 
+        v-for="(item, index) in menu">
         <template slot="title">
           <i class="el-icon-setting"></i>
           <span class="el-menu-item-13" slot="title">{{ item.name }}</span>
         </template>
         <el-menu-item
+          :key="'item_'+n"
           class="el-menu-item-12"
           :index="m.id"
           @click="handleChooseMenu(m.path,m)"
@@ -33,30 +37,24 @@ import api from "@/services/commonLogic";
 
 export default {
   name: "leftMenu",
-  props: ["isCollapse", "isTabs"],
+  props: [ "isCollapse", "isTabs" ],
   data() {
     return {
       menu: [
         {
           id: shortid.generate(),
           name: "系统管理",
-          children: [
-            { id: shortid.generate(), name: "系统列表", path: "/system/list" },
-          ]
+          children: [{ id: shortid.generate(), name: "系统列表", path: "/system/list" }]
         },
         {
           id: shortid.generate(),
           name: "资源管理",
-          children: [
-            { id: shortid.generate(), name: "资源列表", path: "/resource/list" },
-          ]
+          children: [{ id: shortid.generate(), name: "资源列表", path: "/resource/list" }]
         },
         {
           id: shortid.generate(),
           name: "角色管理",
-          children: [
-            { id: shortid.generate(), name: "角色列表", path: "/role/list" },
-          ]
+          children: [{ id: shortid.generate(), name: "角色列表", path: "/role/list" }]
         }
       ]
     };
@@ -72,7 +70,7 @@ export default {
       };
 
       api.getMenu(parms).then(result => {
-        if (result.errorCode == 0) {
+        if (result.errorCode === 0) {
           this.menu = result.data.children;
         } else {
           this.$message.error(result.errorMsg);
@@ -88,40 +86,40 @@ export default {
     handleChooseMenu(path, menu) {
       if (this.isTabs) {
         $TabHelper.open({ path: path });
-      }
-      else {
+      } else {
         // 清空检索栏缓存数据
         let routes = this.$router.options.routes;
-        let key = _pushRouter(menu.path);
+        let key = _pushRouter(menu.path, routes);
         console.log(key);
 
         $TabHelper.delFilter(key);
         $TabHelper.open({ path: path });
 
-        function _pushRouter(path) {
-          let uid = null;
-          routes.forEach((r,i)=>{
-            if (r.path == path) {
-              // 直接定位到目录
-              uid = r.meta.key;
-            }
-            else if (r.children.length > 0) {
-              r.children.forEach((c,k)=>{
-                if (c.path == path) 
-                {
-                  uid = c.meta.uid;
-                }
-              });
-            }
-          });
-
-          return uid;
-        }
+        
 
       }
     }
   }
 };
+
+function _pushRouter(path, routes) {
+  let uid = null;
+  routes.forEach((r, i) => {
+    if (r.path === path) {
+      // 直接定位到目录
+      uid = r.meta.key;
+    } else if (r.children.length > 0) {
+      r.children.forEach((c, k) => {
+        if (c.path === path) {
+          uid = c.meta.uid;
+        }
+      });
+    }
+  });
+
+  return uid;
+}
+
 </script>
 
 <style lang="less" scoped>

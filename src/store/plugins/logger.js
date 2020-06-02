@@ -10,50 +10,52 @@ export default function createLogger ({
   let util = require('../../common/util');
 
   return store => {
-    let prevState = util.deepCopy(store.state)
+    let prevState = util.deepCopy(store.state);
 
     store.subscribe((mutation, state) => {
       if (typeof console === 'undefined') {
-        return
+        return;
       }
-      const nextState = util.deepCopy(state)
+      const nextState = util.deepCopy(state);
 
       if (filter(mutation, prevState, nextState)) {
-        const time = new Date()
-        const formattedTime = ` @ ${pad(time.getHours(), 2)}:${pad(time.getMinutes(), 2)}:${pad(time.getSeconds(), 2)}.${pad(time.getMilliseconds(), 3)}`
-        const formattedMutation = mutationTransformer(mutation)
-        const message = `mutation ${mutation.type}${formattedTime}`
-        const startMessage = collapsed
-          ? console.groupCollapsed
-          : console.group
+        const time = new Date();
+        const formattedTime = ` @ ${pad(time.getHours(), 2)}:${pad(time.getMinutes(), 2)}:${pad(time.getSeconds(), 2)}.${pad(time.getMilliseconds(), 3)}`;
+        const formattedMutation = mutationTransformer(mutation);
+        const message = `mutation ${mutation.type}${formattedTime}`;
+        const startMessage = collapsed ? console.groupCollapsed : console.group;
 
         // render
         try {
-          startMessage.call(console, message)
+          startMessage.call(console, message);
         } catch (e) {
-          log(message)
+          log(message);
         }
 
-        log('%c prev state', 'color: #9E9E9E; font-weight: bold', transformer(prevState))
-        log('%c mutation', 'color: #03A9F4; font-weight: bold', formattedMutation)
-        log('%c next state', 'color: #4CAF50; font-weight: bold', transformer(nextState))
+        log('%c prev state', 'color: #9E9E9E; font-weight: bold', transformer(prevState));
+        log('%c mutation', 'color: #03A9F4; font-weight: bold', formattedMutation);
+        log('%c next state', 'color: #4CAF50; font-weight: bold', transformer(nextState));
 
         try {
-          console.groupEnd()
+          console.groupEnd();
         } catch (e) {
-          log('—— log end ——')
+          log('—— log end ——');
         }
       }
 
-      prevState = nextState
-    })
-  }
+      prevState = nextState;
+    });
+  };
+}
+
+function log(obj) {
+  console.log(obj);
 }
 
 function repeat (str, times) {
-  return (new Array(times + 1)).join(str)
+  return (new Array(times + 1)).join(str);
 }
 
 function pad (num, maxLength) {
-  return repeat('0', maxLength - num.toString().length) + num
+  return repeat('0', maxLength - num.toString().length) + num;
 }
