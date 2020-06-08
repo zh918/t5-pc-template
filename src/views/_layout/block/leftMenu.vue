@@ -6,9 +6,9 @@
       @open="handleOpen"
       @close="handleClose"
       :collapse="isCollapse"
-      background-color="#304156"
-      text-color="#bfcbd9"
-      active-text-color="#ffd04b"
+      background-color="#3A3A3A"
+      text-color="#FFFFFF"
+      active-text-color="#409EFF"
     >
       <el-submenu
         :key="index"
@@ -16,7 +16,7 @@
         v-for="(item, index) in menu">
         <template slot="title">
           <i class="el-icon-setting"></i>
-          <span class="el-menu-item-13" slot="title">{{ item.name }}</span>
+          <span class="el-menu-item-12" slot="title">{{ item.name }}</span>
         </template>
         <el-menu-item
           :key="'item_'+n"
@@ -125,16 +125,18 @@ function _pushRouter(path, routes) {
 <style lang="less" scoped>
 .left-menu-container {
   width: 100%;
-
   i {
     color: #bfcbd9;
   }
 
   .el-menu-item-13 {
-    font-size: 13px;
+    // font-size: 13px;
+    font-family: PingFangSC,helvetica neue,hiragino sans gb,arial,microsoft yahei ui,microsoft yahei,simsun,"sans-serif";
+    font-size: 14px;
   }
 
   .el-menu-item-12 {
+    font-family:MicrosoftYaHei;
     font-size: 12px;
   }
 }

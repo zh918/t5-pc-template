@@ -3,7 +3,11 @@
     <div class="http-line"></div>
     <div class="view-top-container">
       <div class="left-top-box">保理系统</div>
-      <div class="middle-top-box"></div>
+      <div class="middle-top-box">
+        <div class="nav-left">
+            <i :class="isCollapse?'el-icon-s-unfold':'el-icon-s-fold'"  @click="()=>{this.isCollapse = !this.isCollapse;}"></i>
+        </div>
+      </div>
       <div class="right-top-box"><i class="el-icon-user-solid"></i> stephen&nbsp;<el-button type="info" size="mini" icon="el-icon-switch-button" circle @click="handleLoginOut"></el-button></div>
     </div>
     <div class="view-main-container">
@@ -11,23 +15,27 @@
             <left-menu :isCollapse="isCollapse" :isTabs="display==='tab'"></left-menu>
         </div>
         <div class="right-main-box">
-            <div class="nav-container">
-                <div class="nav-left">
-                    <i :class="isCollapse?'el-icon-s-unfold':'el-icon-s-fold'"  @click="()=>{this.isCollapse = !this.isCollapse;}"></i>
-                </div>
-                <div class="nav-middle" v-if="display==='tab'">
-                    <div class="nav-item" :class="item.actived?'bg-color-success':''" :key="index" v-for="(item,index) in tabs.list" @click="handleChooseTab(item)">
-                        <div class="point"></div>{{item.label}}<i class="el-icon-circle-close" @click.stop="handleDelTab(item)" v-if="index != 0"></i><span v-if="index == 0">&nbsp;</span>
-                    </div>
-                </div>
-                <div v-else-if="display==='breadcrumb'">
-                  <el-breadcrumb separator-class="el-icon-arrow-right" class="nav-breadcrumb">
-                    <el-breadcrumb-item :key="index"  v-for="(item,index) in breadcrumbDataList">{{item.name}}</el-breadcrumb-item>
-                  </el-breadcrumb>
-                </div>
-            </div>
-            <div class="right-main-router-view-box">
-                <router-view></router-view>
+            <div class="right-main-box-container">
+              <div class="nav-container">
+                  <div ref="nav_middle" class="nav-middle" v-if="display==='tab'">
+                      <div class="nav-item" :class="item.actived?'nav-item-active':'nav-item-normal'" :key="index" v-for="(item,index) in tabs.list" @click="handleChooseTab(item)">
+                          {{item.label}}<i class="el-icon-circle-close" @click.stop="handleDelTab(item)" v-if="index != 0"></i><span v-if="index == 0">&nbsp;</span>
+                      </div>
+                  </div>
+                  <div v-else-if="display==='breadcrumb'">
+                    <el-breadcrumb separator-class="el-icon-arrow-right" class="nav-breadcrumb">
+                      <el-breadcrumb-item :key="index"  v-for="(item,index) in breadcrumbDataList">{{item.name}}</el-breadcrumb-item>
+                    </el-breadcrumb>
+                  </div>
+                  <div class="nav-right" v-if="display==='tab' && isMove">
+                    <i class="el-icon-caret-left" @click="handleMoveTabToLeft"></i>
+                    <i class="el-icon-caret-right" @click="handleMoveTabToRight"></i>
+                  </div>
+              </div>
+              <div class="right-main-router-view-box">
+                  <router-view></router-view>
+              </div>
+
             </div>
         </div> 
     </div>	 
@@ -44,7 +52,8 @@ export default {
       // true:菜单折叠 false:菜单打开
       isCollapse: false, 
       // 页面打开方式 tab、breadcrumb
-      display: 'tab' 
+      display: 'tab',
+      isMove: true
       // keepAlive:this.$store.state.tabs.list.find(t=>t.path == this.$route.path).meta.keepAlive || false
     }
   },
@@ -57,11 +66,12 @@ export default {
   components: {
     leftMenu
   },
-  created() { 
+  mounted() { 
     this.initData();  
   },
   methods: {
     initData() {
+      this._autoMoveLeftRightOperator();
     },
     _filterRouterForBreadcrumb() {
       let _this = this;
@@ -89,23 +99,39 @@ export default {
           }
         });
       }
-
+      
+      
       return breadcrumbData;
     },
     handleChooseTab(item) {
-      $TabHelper.open({...item});
+      $TabHelper.open({...item}).then(() => {
+        this._autoMoveLeftRightOperator();
+      });
     },
     handleDelTab(item) {
-      console.log(item)
       this.$store.dispatch('tabs/delTab', {...item}).then(result => {
         $TabHelper.open({...result}).then((_) => {
           $TabHelper.delFilter(item.value);
+          this._autoMoveLeftRightOperator();
         });
       }) 
     },
     handleLoginOut() {
       $Data.remove([]);
       this.$router.push({path: '/login'});
+    },
+    handleMoveTabToLeft() {
+      this.$refs.nav_middle.scrollLeft -= 50;
+      // console.log('left', this.$refs.nav_middle.scrollWidth, this.$refs.nav_middle.offsetWidth, this.$refs.nav_middle.clientWidth)
+    },
+    handleMoveTabToRight() {
+      this.$refs.nav_middle.scrollLeft += 50;
+    },
+    _autoMoveLeftRightOperator() {
+      let flag = this.$refs.nav_middle.scrollWidth !== this.$refs.nav_middle.clientWidth;
+      console.log(this.$refs.nav_middle.scrollWidth, this.$refs.nav_middle.offsetWidth, this.$refs.nav_middle.clientWidth)
+      console.log(flag)
+      this.isMove = flag
     }
   }
 }
@@ -116,43 +142,59 @@ export default {
         position: relative;
         width: 100%;
         height: 100%;
-        background: url('../../assets/bg.png') no-repeat;
-        background-size: cover;
+        // background: url('../../assets/bg.png') no-repeat;
+        // background-size: cover;
 
         .view-top-container {
             display: flex;
             width: 100%;
             /* height: 80px;  */
-            height: 60px;
-            background-color: #304156;
+            height: 56px;
+            // background-color: #304156;
+            background-color: #333;
             justify-content: space-between;
 
             .left-top-box {
-                width: 240px;
-                height: 60px;
-                line-height: 60px;
-                padding-left: 30px;
-                font-size: 24px; 
-                color: #bfcbd9; 
+              padding-left: 20px;
+              width:240px;
+              height:56px;
+              font-size:16px;
+              font-family:MicrosoftYaHei-Bold,MicrosoftYaHei;
+              font-weight:bold;
+              color:rgba(255,255,255,1);
+              line-height:56px;
             }
 
             .middle-top-box {
-                flex: 0.6;
+                flex: 1;
                 height: 80px;
                 line-height: 80px; 
+
+                .nav-left { 
+                  width:24px;
+                  height:56px;
+                  line-height: 56px;
+                  i {
+                    font-size: 24px;
+                    color: #fff;
+                    vertical-align: middle;
+                  }
+                }
             }
 
             .right-top-box {
                 flex: 0.2;
-                height: 60px;
-                line-height: 60px;
-                padding-right: 30px;
+                padding-right: 20px;
+                width:84px;
+                height:56px;
+                font-size:12px;
+                font-family:MicrosoftYaHei;
+                color:rgba(255,255,255,1);
+                line-height:56px;
                 text-align: right;
-                font-size: 15px;
-                color: #fff;
 
                 i {
-                    font-size: 15px;
+                    font-size: 12px;
                 }
             }
         }
@@ -160,12 +202,13 @@ export default {
         .view-main-container { 
             display: flex;
             position: absolute;
-            top: 65px;
+            top: 56px;
             bottom: 0;
             left: 0;
             right: 0; 
             margin: 0;
             padding: 0;
+            overflow: auto;
             // border: 1px solid red;
 
             .left-main-box { 
@@ -174,7 +217,9 @@ export default {
                 // margin-right: 10px;
                 overflow-y: auto;
                 // border: 1px solid #ccc;
-                background-color: #304156;
+                // background-color: #304156;
+                
+                background-color: #3A3A3A;
             }
 
             .left-max-width {
@@ -215,87 +260,120 @@ export default {
                 position: relative;
                 flex: 1;
                 height: 100%;
-                padding: 0;
+                padding: 10px 20px;
+                background-color: #EBEEF5;
+                overflow: auto;
+
+                .right-main-box-container {
+                  width: 100%;
+                  height: 100%;
+                  background-color: #fff;
+                }
 
                 .nav-container {
+                    position: relative;
+                    // display: flex;
                     width: 100%;
-                    height: 38px;  
-
-                    box-shadow: inset 0 0 7px rgba(0,0,0,0.2);
-
-                    .nav-left {
-                        position: absolute;
-                        left: 0;
-                        width: 30px;
-                        height: 28px;
-                        line-height: 28px;
-                        text-align: center;
-                        font-size: 20px;
-                        color: #304156;
-                    }
+                    height: 40px;   
+                    background-color: #ebebeb;
 
                     .nav-middle {
-                        display: flex;
-                        position: absolute;
-                        left: 30px;
-                        right: 2px; 
-                        padding-bottom: 2px;
+                        width: calc(100%-64px);
+                        display: -webkit-box;
                         align-items: flex-start;
                         overflow-x: auto;
-                    }
-                    // 滚动条
-                    .nav-middle::-webkit-scrollbar {height: 5px; cursor: pointer;}
-                    .nav-middle::-webkit-scrollbar-thumb {
-                      border-radius: 5px;
-                      // -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-                      background: #67C23A;
-                    }
-                    .nav-middle::-webkit-scrollbar-track {
-                      -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-                      border-radius: 0;
-                      background: none;
+                        overflow-y: hidden;
+                        scrollbar-width: none;
+                        -ms-overflow-style: none;
                     }
 
-                    .nav-middle .nav-item {
+                    .nav-middle::-webkit-scrollbar {
+                      display: none; /* Chrome Safari */
+                    }
+                   
+
+                    .nav-item {
                       position: relative;
-                      display: flex;
-                      margin: auto 5px auto 0;
-                      padding: 0 5px;
+                      padding: 0 30px 0 15px;
                       min-width: 80px;
-                      height: 28px;
-                      line-height: 28px;
+                      height: 40px;
+                      line-height: 40px;
                       text-align: center;
-                      border: 1px solid #ccc;
                       font-size: 12px;
                       justify-content: space-between;
                       align-items: center;
+                      
+                      font-family:MicrosoftYaHei;
                       cursor: pointer;
-
-                      .point {
-                        width: 5px;
-                        height: 5px;
-                        border-radius: 50%;
-                        background-color: #fff;
-                      }
-
+ 
                       i {
-                        // position: absolute;
+                        position: absolute;
+                        right: 10px;
+                        bottom: 0;
+                        top: 13px;
                         font-size: 12px;
-                        color: #ccc;
                         z-index: 100;
                       }
                     }
+
+                    .nav-item:first-child {
+                      padding: 0 30px;
+                    }
+
+                    .nav-item-normal {
+                      border-top: 1px solid #EBEEF5;
+                      border-bottom: 1px solid #EBEEF5;
+                      border-right: 1px solid #EBEEF5;
+                      color: #999;
+                      background-color: #fff;
+                      i {
+                        color: #999;
+                      }
+                    }
+
+                    .nav-item-active {
+                      color: #409EFF;
+                      background-color: #fff;
+                      border-top: 2px solid #409EFF;
+                      border-right: 1px solid #EBEEF5;
+                      i {
+                        top: 12px;
+                        color: #409EFF;
+                      }
+                    }
+
+                    .nav-right {
+                      // display: flex;
+                      position: absolute;
+                      top: 0;
+                      right: 0;
+                      width: 64px;
+                      height: 40px;
+                      line-height: 40px;
+                      text-align: center;
+                      border: 1px solid #EBEEF5;
+                      align-items: center;
+                      justify-content: space-evenly;
+                      background-color: #fff;
+                      z-index: 2000;
+
+                      i {
+                        font-size: 14px;
+                        color: #999;
+                        cursor: pointer;
+                      }
+                    }
+
                 }
 
                 .right-main-router-view-box {
-                    position: absolute;
-                    top: 45px;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    padding: 10px 20px 10px 10px;
-                    overflow-y: auto;
+                    background-color: #fff;
+                    padding: 10px 20px;
                 }
+            }
+
+            .right-main-box::-webkit-scrollbar {
+              display: none; /* Chrome Safari */
             }
         } 
 

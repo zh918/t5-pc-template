@@ -1,7 +1,7 @@
 // 自定义样式及reset
-import "./style/common.less";
 import "./style/reset.less";
 import "lt-element/lib/theme-chalk/index.css";
+import "./style/common.less";
 
 import Vue from "vue";
 import Element from "lt-element";
