@@ -8,7 +8,22 @@
             <i :class="isCollapse?'el-icon-s-unfold':'el-icon-s-fold'"  @click="()=>{this.isCollapse = !this.isCollapse;}"></i>
         </div>
       </div>
-      <div class="right-top-box"><i class="el-icon-user-solid"></i> stephen&nbsp;<el-button type="info" size="mini" icon="el-icon-switch-button" circle @click="handleLoginOut"></el-button></div>
+      <!-- <div class="right-top-box"><i class="el-icon-user-solid"></i> stephen&nbsp;<el-button type="info" size="mini" icon="el-icon-switch-button" circle @click="handleLoginOut"></el-button></div> -->
+      <div class="right-top-box">
+        <el-dropdown trigger="click">
+          <span class="el-dropdown-link">
+            <i class="el-icon-user-solid"></i>&nbsp;<span>stephen</span><i class="el-icon-caret-bottom el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item class="clearfix">
+              修改密码
+            </el-dropdown-item>
+            <el-dropdown-item class="clearfix">
+              <div @click="handleLoginOut">安全退出</div>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
     <div class="view-main-container">
         <div class="left-main-box" :class="isCollapse?'left-min-width':'left-max-width'">
@@ -189,12 +204,14 @@ export default {
                 height:56px;
                 font-size:12px;
                 font-family:MicrosoftYaHei;
-                color:rgba(255,255,255,1);
+                color: #fff;
                 line-height:56px;
                 text-align: right;
 
-                i {
+                i,span {
                     font-size: 12px;
+                    color: #fff;
+                    cursor: pointer;
                 }
             }
         }
@@ -275,7 +292,7 @@ export default {
                     // display: flex;
                     width: 100%;
                     height: 40px;   
-                    background-color: #ebebeb;
+                    background-color: #EBEEF5;
 
                     .nav-middle {
                         width: calc(100%-64px);
