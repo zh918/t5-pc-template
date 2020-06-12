@@ -1,6 +1,7 @@
 const path = {
   authApi: null,
-  busApi: null
+  busApi: null,
+  serverless: null
 };
 
 if (process.env.NODE_ENV === 'debugger' || process.env.NODE_ENV === 'production') {
@@ -12,16 +13,19 @@ if (process.env.NODE_ENV === 'debugger' || process.env.NODE_ENV === 'production'
 
   path.authApi = 'http://localhost:3000';
   path.busApi = 'http://localhost:3000';
+  path.serverless = 'https://serverless-runtime-api.pagoda.com.cn/draft_exc';
 } else if (process.env.NODE_ENV === 'dev') {
   console.log('process.env.NODE_ENV', process.env.NODE_ENV);
   // path.authApi = 'http://192.168.1.25:30006/caiHuiCustomer'
   // path.busApi = 'http://192.168.1.25:30006/caiHuiCustomer'
   path.authApi = 'https://wxdev.yitianxian.com/caiHuiCustomer';
   path.busApi = 'https://wxdev.yitianxian.com/caiHuiCustomer';
+  path.serverless = 'https://serverless-runtime-api.pagoda.com.cn/draft_exc';
 } else if (process.env.NODE_ENV === 'test') { 
   path.authApi = 'https://wxtest.yitianxian.com/caiHuiCustomer';
   path.busApi = 'https://wxtest.yitianxian.com/caiHuiCustomer';
-	
+  path.serverless = 'https://serverless-runtime-api.pagoda.com.cn/draft_exc';
+  
 } else if (process.env.NODE_ENV === 'uat') { 
   path.authApi = 'http://192.168.1.25:30006/caiHuiCustomer';
   path.busApi = 'http://192.168.1.25:30006/caiHuiCustomer';

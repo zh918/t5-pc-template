@@ -7,6 +7,8 @@ import system from './map/auth/system';
 import resource from './map/auth/resource';
 import role from './map/auth/role';
 
+import demo from './map/demo/index';
+
 Vue.use(Router);
 
 // let routerObject = null;
@@ -64,7 +66,8 @@ let routerArray = [
   home,
   system,
   resource,
-  role
+  role,
+  demo
 ];
 
 export default new Router({

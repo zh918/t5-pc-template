@@ -22,9 +22,12 @@ export default {
   // 系统管理
   systemQuery: `${path.busApi}/api/auth/system/query`,
   systemFind: `${path.busApi}/api/auth/system/find`,
-  systemCreate: `${path.busApi}/api/auth/system/create`
+  systemCreate: `${path.busApi}/api/auth/system/create`,
 
 
+  // ----------------以下走 serverless----------------------------
+  apiGetData: `${path.serverless}/stephen_test/api/getData`
+  
   
   
 };

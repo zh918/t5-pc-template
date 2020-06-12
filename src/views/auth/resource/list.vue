@@ -75,6 +75,7 @@ export default {
       // -----------------------标准1 开始-----------------------
       searchContainer: {
         isResetAutoSearch: false,
+        displayType: 'placeholder',
         itemSpan: 4,
         list: [
           { key: 'NAME', type: 'input', class: '', placeholder: '资源名称', value: '', fetch: '', cb: ''},

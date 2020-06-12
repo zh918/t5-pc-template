@@ -55,10 +55,21 @@ export default {
       // -----------------------标准1 开始-----------------------
       searchContainer: {
         isResetAutoSearch: false,
+        displayType: 'placeholder',
         itemSpan: 4,
         list: [
-          { key: 'NAME', type: 'input', class: '', placeholder: '系统名称', value: '', fetch: '', cb: ''},
-          { key: 'STATUS', type: 'select', class: '', placeholder: '系统状态', value: '', fetch: '', cb: '', options: [
+          { key: 'NAME', type: 'input', class: '', title: '系统名称', placeholder: '系统名称', value: '', fetch: '', cb: ''},
+          { key: 'STATUS', type: 'select', class: '', title: '系统状态', placeholder: '系统状态', value: '', fetch: '', cb: '', options: [
+            { value: '1', label: '启用' },
+            { value: '0', label: '禁用' }
+          ]},
+          { key: 'NAME', type: 'input', class: '', title: '系统名称', placeholder: '系统名称', value: '', fetch: '', cb: ''},
+          { key: 'STATUS', type: 'select', class: '', title: '系统状态', placeholder: '系统状态', value: '', fetch: '', cb: '', options: [
+            { value: '1', label: '启用' },
+            { value: '0', label: '禁用' }
+          ]},
+          { key: 'NAME', type: 'input', class: '', span: 6, title: '系统名称系统名称', placeholder: '系统名称', value: '', fetch: '', cb: ''},
+          { key: 'STATUS', type: 'select', class: '', title: '系统状态', placeholder: '系统状态', value: '', fetch: '', cb: '', options: [
             { value: '1', label: '启用' },
             { value: '0', label: '禁用' }
           ]}
