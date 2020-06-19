@@ -25,11 +25,7 @@ const globalVue = new Vue({
   render: h => h(App)
 }).$mount("#app");
 
-window.globalVue = globalVue; 
-
-// 测试访问鉴权
-console.log('测试访问鉴权');
-
-
+window.globalVue = globalVue;
+// authRouter(globalVue); 
 
 console.log("环境：", process.env.NODE_ENV);

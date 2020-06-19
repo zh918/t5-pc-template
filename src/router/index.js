@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+import f403 from './map/layout/403';
 import login from './map/login/index';
 import home from './map/home/index'; 
 import system from './map/auth/system';
@@ -11,57 +12,9 @@ import demo from './map/demo/index';
 
 Vue.use(Router);
 
-// let routerObject = null;
-
-// let routerArrayCache = $Data.getObj('cacheRouterData') == undefined ? null : $Data.getObj('cacheRouterData');
-// if (routerArrayCache) 
-// { 
-//     routerObject = new Router({
-//         mode: 'history',
-//         routes: routerArrayCache,
-//         scrollBehavior (to, from, savedPosition) {
-//             if (savedPosition) {
-//                 return savedPosition
-//             } else {
-//                 return { x: 0, y: 0 }
-//             }
-//         }
-//     });
-// }
-// else 
-// {
-//     let routerArray = [
-//         // { path: '/', redirect: '/login' },
-//         login,
-//         home,
-//         apply,
-//         approve,
-//         demo
-//     ]; 
-    
-//     routerObject = new Router({
-//         mode: 'history',
-//         routes: routerArray,
-//         scrollBehavior (to, from, savedPosition) {
-//             if (savedPosition) {
-//                 return savedPosition
-//             } else {
-//                 return { x: 0, y: 0 }
-//             }
-//         }
-//     });
-
-//     $Data.setObj('cacheRouterData', routerArray); 
-    
-
-// }
-
-
-// export default routerObject;
-
-
 let routerArray = [
-  { path: '/', redirect: '/login' },
+  // { path: '/', redirect: '/login' },
+  f403,
   login,
   home,
   system,
@@ -71,7 +24,7 @@ let routerArray = [
 ];
 
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   routes: routerArray,
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {

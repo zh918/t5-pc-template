@@ -59,7 +59,8 @@
 
 <script>
 import { mapState } from "vuex";    
-import leftMenu from './block/leftMenu'
+import leftMenu from './block/leftMenu';
+import api from "@/services/commonLogic";
 
 export default {
   data() {
@@ -133,7 +134,8 @@ export default {
     },
     handleLoginOut() {
       $Data.remove([]);
-      this.$router.push({path: '/login'});
+      // this.$router.push({path: '/login'});
+      api.logout();
     },
     handleMoveTabToLeft() {
       this.$refs.nav_middle.scrollLeft -= 50;

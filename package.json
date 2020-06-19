@@ -7,12 +7,13 @@
     "lint": "eslint --ext .js,.vue src --quiet",
     "start": "npm run lint && node build/debugger.js",
     "prod": "node build/prod.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env NODE_ENV=dev echo \"Error: no test specified\" && exit 1"
   },
   "author": "stephen",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.7.5",
+    "@babel/plugin-transform-runtime": "^7.10.1",
     "@babel/preset-env": "^7.7.6",
     "axios": "^0.19.0",
     "babel-loader": "^8.0.6",

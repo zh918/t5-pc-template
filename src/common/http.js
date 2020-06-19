@@ -4,19 +4,19 @@ import Progress from './progress';
 class http {
   static post(url, parms={}, headers={}, isToken=true) {
     let ran = Math.floor(Math.random() * 100);
-    let option = Object.assign({}, { 'content-type': 'application/json; charset=utf-8' }, headers);
-    if (isToken) {
-      if ($Data.get('token')){
-        Object.assign(option, {Authorization: $Data.get('token')});
-      } else {
-        globalVue.$router.push({path: '/login'});
-      }
-    } else {
-      if ($Data.get('token')){
-        Object.assign(option, {Authorization: $Data.get('token')});
-      } 
-    }
-
+    let option = Object.assign({}, { 'content-type': 'application/json; charset=utf-8', 'x-client-ajax': 1 }, headers);
+    // if (isToken) {
+    //   if ($Data.get('token')){
+    //     Object.assign(option, {Authorization: $Data.get('token')});
+    //   } else {
+    //     globalVue.$router.push({path: '/login'});
+    //   }
+    // } else {
+    //   if ($Data.get('token')){
+    //     Object.assign(option, {Authorization: $Data.get('token')});
+    //   } 
+    // }
+    
     var instance = axios.create({
       timeout: 1000 * 30,
       headers: option, 
@@ -40,20 +40,22 @@ class http {
     return instance.post(url, parms).then(function(res){
       if (res.data.code === 12) {
         globalVue.$message.error('登录超时或用户信息丢失，请重新登录');
-        // setTimeout(()=>{
-        // 	globalVue.$router.push({path:'/login'});
-        // },800)
       } else if (res.data.code === 14) {
         globalVue.$message.error(res.data.errorMsg);
       }
 
       return res.data;
     }).catch(res => {
+      if (res.response.status === 418) {
+        //这里是你想要用户登录成功后浏览器跳转回来的页面 location.origin 
+        // location.href;
+        const origin = location.href;
+        location.href = `http://serverless-runtime-api.pagoda.com.cn/login?redirect=${encodeURIComponent(origin)}`;
+        return;
+      }
+
       if (res.toString().indexOf('Network Error')) {
         globalVue.$message.error('网络异常，系统发生错误');
-        // setTimeout(()=>{
-        // 	globalVue.$router.push({path:'/login'});
-        // },800)
       } else if (res.toString().indexOf('ERR_CONNECTION_TIMED_OUT')) {
         globalVue.$message.error('网络异常，链接超时');
       }

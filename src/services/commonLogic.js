@@ -15,10 +15,22 @@ class CommonLogic {
     });
   }
 
-  loginOut(parms) {}
+  logout() {
+    return $http.post(urls.logout, {redirect: decodeURIComponent(location.origin)}).then(result => {
+      debugger
+      location.href = result.data;
+    });
+  }
 
-  getMenu(parms) {
-    return $http.post(urls.getUserMenuTree, parms);
+  async getMenu(path) {
+    window.authPromise = window.authPromise || await $http.post(urls.getUserMenuTree);
+    if (path === '/f403') {
+      return true;
+    } else if (path) {
+      return window.authPromise.auths.some(a => a.path === path);
+    } else {
+      return window.authPromise;
+    }
   }
 }
 

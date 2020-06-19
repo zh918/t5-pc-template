@@ -6,7 +6,7 @@ const { VueLoaderPlugin } = require("vue-loader");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin")
-
+process.env.NODE_ENV = 'dev'
 // 输出跟文件夹名称
 const dist_name = 'dist'
 

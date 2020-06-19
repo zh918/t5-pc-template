@@ -12,7 +12,7 @@
     >
       <el-submenu
         :key="index"
-        :index="item.id" 
+        :index="item.id"
         v-for="(item, index) in menu">
         <template slot="title">
           <i class="el-icon-setting"></i>
@@ -40,30 +40,21 @@ export default {
   props: [ "isCollapse", "isTabs" ],
   data() {
     return {
-      menu: [
-        {
-          id: shortid.generate(),
-          name: "系统管理",
-          children: [{ id: shortid.generate(), name: "系统列表", path: "/system/list" }]
-        },
-        {
-          id: shortid.generate(),
-          name: "资源管理",
-          children: [{ id: shortid.generate(), name: "资源列表", path: "/resource/list" }]
-        },
-        {
-          id: shortid.generate(),
-          name: "角色管理",
-          children: [{ id: shortid.generate(), name: "角色列表", path: "/role/list" }]
-        }
-      ]
+      menu: []
     };
   },
   created() {
-    // this.initData();
+    this.initData();
   },
   methods: {
     initData() {
+      api.getMenu().then(result => {
+        if (result.trees) {
+          this.menu = result.trees;
+        } 
+      });
+    },
+    initData1() {
       let parms = {
         clientId: "bgyfactorOmp",
         userCode: $Data.get("userCode")
