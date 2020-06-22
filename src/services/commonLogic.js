@@ -17,7 +17,7 @@ class CommonLogic {
 
   logout() {
     return $http.post(urls.logout, {redirect: decodeURIComponent(location.origin)}).then(result => {
-      debugger
+      
       location.href = result.data;
     });
   }
