@@ -9,7 +9,7 @@ export const authRouter = (globalVue) => {
         next();
       } else {
         // 抛出提示告知无权限
-        // next({path: "/f403"});
+        next({path: "/f403"});
       }
     });
   });

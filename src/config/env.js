@@ -4,7 +4,7 @@ const path = {
   serverless: null
 };
 
-if (process.env.NODE_ENV === 'debugger' || process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'debugger' || process.env.NODE_ENV === 'dev') {
   // path.authApi = 'http://192.168.1.50:30006/scfManager'
   // path.busApi = 'http://192.168.1.50:30006/scfManager'
 

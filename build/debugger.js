@@ -1,9 +1,9 @@
-process.env.NODE_ENV = 'debugger' 
+process.env.NODE_ENV = 'dev';
 
 const config = {
-    dist_name:'dist',
-    port:9000,
-    isOpen:false,
+  dist_name: 'dist',
+  port: 9000,
+  isOpen: false
 }
 
 const ora = require('ora')
@@ -19,20 +19,20 @@ const app = express()
 const compiler = webpack(webpackConfig)
 
 const devMiddleware = require('webpack-dev-middleware')(compiler, {
-    publicPath: webpackConfig.output.publicPath,
-    quiet: true
+  publicPath: webpackConfig.output.publicPath,
+  quiet: true
 })
 
 const hotMiddleware = require('webpack-hot-middleware')(compiler, {
-    log: () => {},
-    heartbeat: 2000
+  log: () => {},
+  heartbeat: 2000
 })
 
 compiler.plugin('compilation', function (compilation) {
-    compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-      hotMiddleware.publish({ action: 'reload' })
-      cb()
-    })
+  compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
+    hotMiddleware.publish({ action: 'reload' })
+    cb()
+  })
 })
 
 app.use(require('connect-history-api-fallback')())
@@ -46,18 +46,18 @@ const uri = `http://localhost:${config.port}`
 
 devMiddleware.waitUntilValid(function () {
   console.log(chalk.cyan('  debugger环境开始构建\n'))
-    console.log('> Listening at ' + uri + '\n')
+  console.log('> Listening at ' + uri + '\n')
 })
 
 module.exports = app.listen(config.port, function (err) {
-    if (err) {
-      console.log(err)
-      return
-    }
-   
-    if (config.isOpen) {
-      opn(uri)
-    }
+  if (err) {
+    console.log(err)
+    return
+  }
+  
+  if (config.isOpen) {
+    opn(uri)
+  }
 })
 
 

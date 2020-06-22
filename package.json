@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ext .js,.vue src --quiet",
-    "start": "npm run lint && node build/debugger.js",
-    "prod": "node build/prod.js",
-    "test": "cross-env NODE_ENV=dev echo \"Error: no test specified\" && exit 1"
+    "dev": "npm run lint && node build/debugger.js",
+    "test": "npm run lint && node build/test.js",
+    "uat": "npm run lint && node build/uat.js",
+    "prod": "npm run lint && node build/prod.js"
   },
   "author": "stephen",
   "license": "ISC",

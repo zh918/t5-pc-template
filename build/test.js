@@ -12,15 +12,17 @@ const spinner = ora('building for production...')
 spinner.start()
  
 webpack(webpackConfig, function (err, stats) {
-    spinner.stop()
-    if (err) throw err
-    process.stdout.write(stats.toString({
-        colors: true,
-        modules: false,
-        children: false,
-        chunks: false,
-        chunkModules: false
-    }) + '\n\n')
+  spinner.stop()
+  if (err) {
+    throw err 
+  }
+  process.stdout.write(stats.toString({
+    colors: true,
+    modules: false,
+    children: false,
+    chunks: false,
+    chunkModules: false
+  }) + '\n\n')
 
-    console.log(chalk.cyan('  测试环境构建完成\n'))
+  console.log(chalk.cyan('  测试环境构建完成\n'))
 })
