@@ -22,6 +22,18 @@ class CommonLogic {
     });
   }
 
+  // 加载权限数据
+  getAuthData() {
+    return new Promise(function(resolve, reject){
+      $http.post(urls.getUserMenuTree).then(result => {
+        window.authPromise = result;
+        resolve(true)
+      });
+
+    });
+  }
+
+  // 通过path来判定是否具有权限访问
   async getMenu(path) {
     window.authPromise = window.authPromise || await $http.post(urls.getUserMenuTree);
     if (path === '/f403') {

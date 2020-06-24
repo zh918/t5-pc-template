@@ -68,7 +68,7 @@ export default {
       // true:菜单折叠 false:菜单打开
       isCollapse: false, 
       // 页面打开方式 tab、breadcrumb
-      display: 'tab',
+      display: 'breadcrumb',
       isMove: true
       // keepAlive:this.$store.state.tabs.list.find(t=>t.path == this.$route.path).meta.keepAlive || false
     }

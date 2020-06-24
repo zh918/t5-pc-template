@@ -8,7 +8,7 @@
       :paginationContainer="paginationContainer">
       <template slot="operate" slot-scope="row">
         <div>
-          <el-button type="text" @click="handleDetails(row.CODE)" size="mini">详情</el-button>
+          <el-button type="text" @click="handleDetails(row.CODE)" size="mini" v-if="permission('system_list_detail')">详情</el-button>
           <el-button type="text" size="">删除</el-button>
         </div>
       </template>
