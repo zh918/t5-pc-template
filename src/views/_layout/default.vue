@@ -397,10 +397,11 @@ export default {
         } 
 
         .nav-breadcrumb {
-          height: 38px;
-          line-height: 28px;
-          margin-left: 38px;
+          height: 40px;
+          line-height: 40px;
+          padding-left: 20px;
           font-size: 13px;
+          background-color: #fff;
         }
     }
 </style>
