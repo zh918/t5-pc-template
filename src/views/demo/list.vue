@@ -1,8 +1,8 @@
 <template>
     <div class="home-container"> 
-        外网（http://consul-omp-server-dev.kd1.pagoda.com.cn/api/human/person/list）数据：{{data}}
-        <br/>
-        内网（http://consul-omp-server-dev:9002/api/human/person/list）数据：{{data1}}
+        数据：{{data}}
+        <!-- <br/>
+        内网（http://consul-omp-server-dev:9002/api/human/person/list）数据：{{data1}} -->
     </div>
 </template>
 
@@ -17,16 +17,31 @@ export default {
   },
   created() {
     this.initData();
-    this.initData1();
+    // this.initData1();
   },
   methods: {
     initData() {
-      api.getDemoList().then(reulst => {
+      let parms = {
+        name: "stephen",
+        age: 8,
+        other: {
+          address: "中国北京"
+        }
+      }
+      api.getDemoList(parms).then(reulst => {
         this.data = reulst;
       });
     },
     initData1() {
-      api.getDemoList1().then(reulst => {
+      let parms = {
+        name: "拾光",
+        age: 18,
+        other: {
+          address: "中国海南"
+        }
+      }
+
+      api.getDemoList1(parms).then(reulst => {
         this.data1 = reulst;
       });
     }

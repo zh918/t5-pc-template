@@ -7,12 +7,12 @@ class DemoLogic {
     return $http.post(urls.apiGetData, parms);
   }
 
-  getDemoList() {
-    return $http.post(urls.getDemoList);
+  getDemoList(parms) {
+    return $http.post(urls.getDemoList, parms);
   }
 
-  getDemoList1() {
-    return $http.post(urls.getDemoList1);
+  getDemoList1(parms) {
+    return $http.post(urls.getDemoList1, parms);
   }
 }
 
