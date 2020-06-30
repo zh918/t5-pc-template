@@ -40,11 +40,46 @@ export default {
   props: [ "isCollapse", "isTabs" ],
   data() {
     return {
-      menu: []
+      menu: [
+        {
+          "code": "home",
+          "deleted": 0,
+          "metaData": "",
+          "name": "首页",
+          "pid": 12191,
+          "remark": "",
+          "tag": "/home",
+          "id": "home",
+          "path": "/home"
+        },
+        {
+          "code": "system",
+          "deleted": 0,
+          "metaData": "",
+          "name": "系统管理",
+          "pid": 12191,
+          "remark": "",
+          "tag": "",
+          "id": "system",
+          "path": "",
+          "children": [
+            {
+              "code": "system_list",
+              "deleted": 0,
+              "metaData": "11111",
+              "name": "系统列表",
+              "remark": "",
+              "tag": "/system/list",
+              "id": "system_list",
+              "path": "/system/list"
+            }
+          ]
+        }
+      ]
     };
   },
   created() {
-    this.initData();
+    // this.initData();
   },
   methods: {
     initData() {
